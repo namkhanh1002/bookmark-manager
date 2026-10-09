@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  bookmarks    Bookmark[]
+  tags         Tag[]
+}
+
+model Bookmark {
+  id           String         @id @default(cuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  url          String
+  normalizedUrl String
+  description  String?
+  faviconUrl   String?
+  viewCount    Int            @default(0)
+  lastVisitedAt DateTime?
+  isPinned     Boolean        @default(false)
+  isArchived   Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  tags         BookmarkTag[]
+
+  @@unique([userId, normalizedUrl])
+  @@index([userId, isArchived, createdAt])
+  @@index([userId, isPinned, createdAt])
+  @@index([userId, lastVisitedAt])
+  @@index([userId, viewCount])
+  @@index([userId, title])
+}
+
+model Tag {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  color     String        @default("#6366f1")
+  createdAt DateTime      @default(now())
+  bookmarks BookmarkTag[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model BookmarkTag {
+  bookmarkId String
+  tagId      String
+  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([bookmarkId, tagId])
+  @@index([tagId])
+}
