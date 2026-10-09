@@ -5,6 +5,7 @@
   "buildCommand": "npm run db:deploy && npm run build",
   "outputDirectory": "client/dist",
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
