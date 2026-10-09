@@ -12,12 +12,12 @@ import { cn, TAG_COLORS } from "../../lib/utils";
 import type { SortOption, Tag, TagMode } from "../../types";
 
 export const SORT_LABELS: Record<SortOption, string> = {
-  recent: "Recently added",
-  oldest: "Oldest added",
-  recentlyVisited: "Recently visited",
-  mostVisited: "Most visited",
-  titleAsc: "Title A–Z",
-  titleDesc: "Title Z–A",
+  recent: "Mới nhất",
+  oldest: "Cũ nhất",
+  recentlyVisited: "Truy cập gần đây",
+  mostVisited: "Xem nhiều nhất",
+  titleAsc: "Tiêu đề A–Z",
+  titleDesc: "Tiêu đề Z–A",
 };
 
 interface ToolbarProps {
@@ -55,7 +55,7 @@ export function Toolbar({
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground" aria-live="polite">
-          {loading ? "Loading bookmarks…" : `${total} bookmark${total === 1 ? "" : "s"}`}
+          {loading ? "Đang tải dấu trang…" : `${total} dấu trang`}
         </p>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -81,7 +81,7 @@ export function Toolbar({
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="gap-1.5">
                 <Tags className="size-3.5" />
-                Tags
+                Thẻ
                 {selectedTags.length > 0 && (
                   <span className="rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
                     {selectedTags.length}
@@ -93,7 +93,7 @@ export function Toolbar({
             <PopoverContent align="end" className="w-80 p-3">
               <div className="mb-3 flex items-center justify-between gap-2">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Filter by tags
+                  Lọc theo thẻ
                 </p>
                 <div className="flex rounded-lg border border-border p-0.5 text-xs">
                   {(["any", "all"] as TagMode[]).map((mode) => (
@@ -108,7 +108,7 @@ export function Toolbar({
                           : "text-muted-foreground hover:text-foreground",
                       )}
                     >
-                      {mode === "any" ? "Match ANY" : "Match ALL"}
+                      {mode === "any" ? "Khớp bất kỳ" : "Khớp tất cả"}
                     </button>
                   ))}
                 </div>
@@ -117,7 +117,7 @@ export function Toolbar({
               <div className="scrollbar-thin max-h-64 space-y-0.5 overflow-y-auto">
                 {tags.length === 0 && (
                   <p className="px-2 py-4 text-center text-xs text-muted-foreground">
-                    No tags yet. Create them from the Tags page.
+                    Chưa có thẻ nào. Hãy tạo thẻ từ trang Thẻ.
                   </p>
                 )}
                 {tags.map((tag) => {
@@ -150,7 +150,7 @@ export function Toolbar({
               {selectedTags.length > 0 && (
                 <div className="mt-3 border-t border-border pt-2">
                   <Button variant="ghost" size="sm" className="w-full" onClick={onClearTagFilter}>
-                    Clear tag filter
+                    Xóa lọc thẻ
                   </Button>
                 </div>
               )}
@@ -165,8 +165,8 @@ export function Toolbar({
                 "rounded-md p-1.5 transition",
                 layout === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
               )}
-              aria-label="Grid view"
-              title="Grid view"
+              aria-label="Chế độ lưới"
+              title="Chế độ lưới"
             >
               <LayoutGrid className="size-4" />
             </button>
@@ -177,8 +177,8 @@ export function Toolbar({
                 "rounded-md p-1.5 transition",
                 layout === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
               )}
-              aria-label="List view"
-              title="List view"
+              aria-label="Chế độ danh sách"
+              title="Chế độ danh sách"
             >
               <List className="size-4" />
             </button>
@@ -189,7 +189,7 @@ export function Toolbar({
       {selectedTagObjects.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-xs text-muted-foreground">
-            {tagMode === "all" ? "Matching all:" : "Matching any:"}
+            {tagMode === "all" ? "Khớp tất cả:" : "Khớp bất kỳ:"}
           </span>
           {selectedTagObjects.map((tag) => (
             <TagBadge key={tag.id} tag={tag} onRemove={() => onTagToggle(tag.id)} />

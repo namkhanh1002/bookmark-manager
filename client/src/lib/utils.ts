@@ -30,31 +30,31 @@ export function formatCount(value: number): string {
 }
 
 export function formatRelativeTime(iso: string | null | undefined): string {
-  if (!iso) return "Never";
+  if (!iso) return "Chưa bao giờ";
   const date = new Date(iso);
   const diff = Date.now() - date.getTime();
-  if (Number.isNaN(diff)) return "Never";
+  if (Number.isNaN(diff)) return "Chưa bao giờ";
 
   const seconds = Math.round(diff / 1000);
-  if (seconds < 45) return "Just now";
+  if (seconds < 45) return "Vừa xong";
   const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `${minutes} phút trước`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `${hours} giờ trước`;
   const days = Math.round(hours / 24);
-  if (days < 7) return `${days}d ago`;
+  if (days < 7) return `${days} ngày trước`;
   const weeks = Math.round(days / 7);
-  if (weeks < 5) return `${weeks}w ago`;
+  if (weeks < 5) return `${weeks} tuần trước`;
   const months = Math.round(days / 30);
-  if (months < 12) return `${months}mo ago`;
-  return `${Math.round(days / 365)}y ago`;
+  if (months < 12) return `${months} tháng trước`;
+  return `${Math.round(days / 365)} năm trước`;
 }
 
 export function formatDate(iso: string | null | undefined): string {
   if (!iso) return "—";
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  return date.toLocaleDateString("vi-VN", { year: "numeric", month: "short", day: "numeric" });
 }
 
 export const TAG_COLORS = [

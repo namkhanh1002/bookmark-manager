@@ -27,7 +27,7 @@ export function errorHandler(
   if (err && typeof err === "object" && (err as { name?: string }).name === "ZodError") {
     const zodError = err as { issues: { path: (string | number)[]; message: string }[] };
     const details = zodError.issues.map((i) => ({ field: i.path.join("."), message: i.message }));
-    const apiError = validationError("Please check the highlighted fields", details);
+    const apiError = validationError("Vui lòng kiểm tra các trường được đánh dấu", details);
     res.status(apiError.status).json({
       success: false,
       error: { code: apiError.code, message: apiError.message, details: apiError.details },
@@ -40,14 +40,14 @@ export function errorHandler(
     if (prismaError.code === "P2002") {
       res.status(409).json({
         success: false,
-        error: { code: "CONFLICT", message: "A record with the same unique value already exists" },
+        error: { code: "CONFLICT", message: "Bản ghi với giá trị duy nhất này đã tồn tại" },
       });
       return;
     }
     if (prismaError.code === "P2025") {
       res.status(404).json({
         success: false,
-        error: { code: "NOT_FOUND", message: "Resource not found" },
+        error: { code: "NOT_FOUND", message: "Không tìm thấy tài nguyên" },
       });
       return;
     }
@@ -56,7 +56,7 @@ export function errorHandler(
   if (err instanceof SyntaxError && "body" in err) {
     res.status(400).json({
       success: false,
-      error: { code: "BAD_REQUEST", message: "Malformed JSON body" },
+      error: { code: "BAD_REQUEST", message: "Nội dung JSON không hợp lệ" },
     });
     return;
   }
@@ -67,7 +67,7 @@ export function errorHandler(
     success: false,
     error: {
       code: "INTERNAL_ERROR",
-      message: isProduction ? "Something went wrong on our end" : String((err as Error)?.message ?? err),
+      message: isProduction ? "Đã xảy ra lỗi phía máy chủ" : String((err as Error)?.message ?? err),
     },
   });
 }
@@ -75,6 +75,6 @@ export function errorHandler(
 export function notFoundHandler(req: Request, res: Response): void {
   res.status(404).json({
     success: false,
-    error: { code: "NOT_FOUND", message: `Route ${req.method} ${req.path} not found` },
+    error: { code: "NOT_FOUND", message: `Không tìm thấy route ${req.method} ${req.path}` },
   });
 }

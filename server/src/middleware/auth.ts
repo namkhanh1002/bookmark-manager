@@ -12,7 +12,7 @@ export const requireAuth: RequestHandler = async (req: Request, _res: Response, 
   try {
     const header = req.headers.authorization;
     if (!header?.startsWith("Bearer ")) {
-      throw unauthorized("Missing access token. Please sign in.");
+      throw unauthorized("Thiếu token truy cập. Vui lòng đăng nhập.");
     }
 
     const token = header.slice(7).trim();
@@ -22,17 +22,17 @@ export const requireAuth: RequestHandler = async (req: Request, _res: Response, 
       where: { id: payload.sub },
       select: { id: true },
     });
-    if (!user) throw forbidden("Account no longer exists");
+    if (!user) throw forbidden("Tài khoản không còn tồn tại");
 
     req.userId = user.id;
     next();
   } catch (err) {
     if (err && typeof err === "object" && "name" in err && (err as Error).name === "JsonWebTokenError") {
-      next(unauthorized("Invalid or expired access token"));
+      next(unauthorized("Token truy cập không hợp lệ hoặc đã hết hạn"));
       return;
     }
     if (err && typeof err === "object" && "name" in err && (err as Error).name === "TokenExpiredError") {
-      next(unauthorized("Session expired, please sign in again"));
+      next(unauthorized("Phiên đã hết hạn, vui lòng đăng nhập lại"));
       return;
     }
     next(err);

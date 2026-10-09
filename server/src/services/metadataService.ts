@@ -84,17 +84,17 @@ function requestOnce(rawUrl: string): Promise<HopResult> {
     try {
       url = new URL(rawUrl);
     } catch {
-      reject(new ApiError(400, "INVALID_URL", "Invalid URL"));
+      reject(new ApiError(400, "INVALID_URL", "URL không hợp lệ"));
       return;
     }
 
     if (url.protocol !== "http:" && url.protocol !== "https:") {
-      reject(new ApiError(400, "INVALID_URL", "Only http and https URLs are supported"));
+      reject(new ApiError(400, "INVALID_URL", "Chỉ hỗ trợ URL http và https"));
       return;
     }
 
     if (isBlockedHostname(url.hostname)) {
-      reject(new ApiError(400, "INVALID_URL", `"${url.hostname}" is not a public address`));
+      reject(new ApiError(400, "INVALID_URL", `"${url.hostname}" không phải địa chỉ công khai`));
       return;
     }
 

@@ -85,9 +85,9 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
 
   const validate = () => {
     const next: { title?: string; url?: string } = {};
-    if (!title.trim()) next.title = "Title is required";
-    if (!url.trim()) next.url = "URL is required";
-    else if (!safeUrl(url.trim())) next.url = "Enter a valid URL (https://example.com)";
+    if (!title.trim()) next.title = "Vui lòng nhập tiêu đề";
+    if (!url.trim()) next.url = "Vui lòng nhập URL";
+    else if (!safeUrl(url.trim())) next.url = "Vui lòng nhập URL hợp lệ (https://example.com)";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -109,18 +109,18 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
 
       if (bookmark) {
         await updateBookmark(bookmark.id, payload);
-        toast({ title: "Bookmark updated", description: "Your changes were saved.", variant: "success" });
+        toast({ title: "Đã cập nhật dấu trang", description: "Thay đổi của bạn đã được lưu.", variant: "success" });
       } else {
         await createBookmark(payload);
-        toast({ title: "Bookmark added", description: title.trim(), variant: "success" });
+        toast({ title: "Đã thêm dấu trang", description: title.trim(), variant: "success" });
       }
 
       emitDataChange();
       onDone();
     } catch (err) {
-      const message = err instanceof ApiError ? err.message : "Something went wrong. Please try again.";
+      const message = err instanceof ApiError ? err.message : "Đã xảy ra lỗi. Vui lòng thử lại.";
       const field = err instanceof ApiError ? err.details?.[0]?.message : undefined;
-      toast({ title: bookmark ? "Could not update bookmark" : "Could not add bookmark", description: field ?? message, variant: "error" });
+      toast({ title: bookmark ? "Không thể cập nhật dấu trang" : "Không thể thêm dấu trang", description: field ?? message, variant: "error" });
     } finally {
       setBusy(false);
     }
@@ -129,11 +129,11 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <DialogHeader>
-        <DialogTitle>{bookmark ? "Edit bookmark" : "Add bookmark"}</DialogTitle>
+        <DialogTitle>{bookmark ? "Sửa dấu trang" : "Thêm dấu trang"}</DialogTitle>
         <DialogDescription>
           {bookmark
-            ? "Update the details of this saved link."
-            : "Paste a URL — we will try to fetch the title, description and favicon for you."}
+            ? "Cập nhật thông tin của liên kết đã lưu này."
+            : "Dán một URL — chúng tôi sẽ cố gắng lấy tiêu đề, mô tả và favicon cho bạn."}
         </DialogDescription>
       </DialogHeader>
 
@@ -158,8 +158,8 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
                 type="button"
                 onClick={() => void fetchMeta(url.trim())}
                 className="rounded p-0.5 text-muted-foreground transition hover:text-primary"
-                aria-label="Fetch site metadata"
-                title="Fetch title and description"
+                aria-label="Lấy siêu dữ liệu trang web"
+                title="Lấy tiêu đề và mô tả"
               >
                 <Sparkles className="size-4" />
               </button>
@@ -170,7 +170,7 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="bookmark-title">Title</Label>
+        <Label htmlFor="bookmark-title">Tiêu đề</Label>
         <Input
           id="bookmark-title"
           value={title}
@@ -178,26 +178,26 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
             setTitle(event.target.value);
             setTitleTouched(true);
           }}
-          placeholder="e.g. React documentation"
+          placeholder="VD: tài liệu React"
           maxLength={300}
         />
         <FieldError message={errors.title} />
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="bookmark-description">Description</Label>
+        <Label htmlFor="bookmark-description">Mô tả</Label>
         <Textarea
           id="bookmark-description"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          placeholder="Why is this link worth saving? (optional)"
+          placeholder="Tại sao liên kết này đáng lưu? (không bắt buộc)"
           rows={3}
           maxLength={2000}
         />
       </div>
 
       <div className="space-y-1.5">
-        <Label>Tags</Label>
+        <Label>Thẻ</Label>
         <TagMultiSelect selectedIds={tagIds} onChange={setTagIds} />
       </div>
 
@@ -213,7 +213,7 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
       >
         <span className="flex items-center gap-2">
           <Pin className="size-4" />
-          Pin this bookmark to the top
+          Ghim dấu trang này lên đầu
         </span>
         <span
           className={cn(
@@ -232,11 +232,11 @@ function FormBody({ bookmark, onDone }: { bookmark: Bookmark | null; onDone: () 
 
       <DialogFooter>
         <Button variant="outline" onClick={onDone} disabled={busy}>
-          Cancel
+          Hủy
         </Button>
         <Button type="submit" disabled={busy}>
           {busy && <Spinner className="size-3.5" />}
-          {bookmark ? "Save changes" : "Add bookmark"}
+          {bookmark ? "Lưu thay đổi" : "Thêm dấu trang"}
         </Button>
       </DialogFooter>
     </form>

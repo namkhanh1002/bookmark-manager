@@ -12,7 +12,7 @@ export function Spinner({ className }: { className?: string }) {
         className,
       )}
       role="status"
-      aria-label="Loading"
+      aria-label="Đang tải"
     />
   );
 }

@@ -46,11 +46,11 @@ export function TagsPage() {
       await deleteTag(deleting.id);
       emitDataChange();
       refresh();
-      toast({ title: "Tag deleted", description: `"${deleting.name}" was removed from your bookmarks.`, variant: "success" });
+      toast({ title: "Đã xóa thẻ", description: `Đã xóa "${deleting.name}" khỏi các dấu trang của bạn.`, variant: "success" });
     } catch (err) {
       toast({
-        title: "Could not delete tag",
-        description: err instanceof ApiError ? err.message : "Please try again.",
+        title: "Không thể xóa thẻ",
+        description: err instanceof ApiError ? err.message : "Vui lòng thử lại.",
         variant: "error",
       });
     }
@@ -63,8 +63,8 @@ export function TagsPage() {
       refresh();
     } catch (err) {
       toast({
-        title: "Could not update color",
-        description: err instanceof ApiError ? err.message : "Please try again.",
+        title: "Không thể cập nhật màu",
+        description: err instanceof ApiError ? err.message : "Vui lòng thử lại.",
         variant: "error",
       });
     }
@@ -74,14 +74,14 @@ export function TagsPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Tags</h1>
+          <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Thẻ</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Group related bookmarks. Deleting a tag never deletes the bookmarks themselves.
+            Nhóm các dấu trang liên quan với nhau. Xóa thẻ không bao giờ xóa các dấu trang.
           </p>
         </div>
         <Button onClick={openCreate}>
           <Plus />
-          New tag
+          Thẻ mới
         </Button>
       </header>
 
@@ -98,16 +98,16 @@ export function TagsPage() {
       ) : error ? (
         <EmptyState
           icon={<TagsIcon className="size-6" />}
-          title="Could not load tags"
+          title="Không thể tải thẻ"
           description={error}
-          action={{ label: "Try again", onClick: refresh }}
+          action={{ label: "Thử lại", onClick: refresh }}
         />
       ) : tags.length === 0 ? (
         <EmptyState
           icon={<TagsIcon className="size-6" />}
-          title="No tags yet"
-          description="Create your first tag to start grouping bookmarks by topic, project or priority."
-          action={{ label: "Create a tag", onClick: openCreate }}
+          title="Chưa có thẻ nào"
+          description="Tạo thẻ đầu tiên để bắt đầu nhóm dấu trang theo chủ đề, dự án hoặc mức độ ưu tiên."
+          action={{ label: "Tạo thẻ", onClick: openCreate }}
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -123,19 +123,19 @@ export function TagsPage() {
                     <h2 className="truncate text-base font-semibold text-foreground">{tag.name}</h2>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {tag.count ?? 0} bookmark{(tag.count ?? 0) === 1 ? "" : "s"} · created{" "}
+                    {(tag.count ?? 0) === 1 ? "1 dấu trang" : `${tag.count ?? 0} dấu trang`} · tạo ngày{" "}
                     {formatDate(tag.createdAt)}
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
-                  <Button size="iconSm" variant="ghost" onClick={() => openEdit(tag)} aria-label="Rename tag">
+                  <Button size="iconSm" variant="ghost" onClick={() => openEdit(tag)} aria-label="Đổi tên thẻ">
                     <Pencil />
                   </Button>
                   <Button
                     size="iconSm"
                     variant="ghost"
                     onClick={() => setDeleting(tag)}
-                    aria-label="Delete tag"
+                    aria-label="Xóa thẻ"
                     className="hover:text-destructive"
                   >
                     <Trash2 />
@@ -150,12 +150,12 @@ export function TagsPage() {
                       type="button"
                       className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
                     >
-                      <Palette className="size-3.5" /> Color
+                      <Palette className="size-3.5" /> Màu
                     </button>
                   </PopoverTrigger>
                   <PopoverContent align="start" className="w-56">
                     <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      Tag color
+                      Màu thẻ
                     </p>
                     <div className="grid grid-cols-6 gap-2">
                       {TAG_COLORS.map((color) => (
@@ -168,7 +168,7 @@ export function TagsPage() {
                             tag.color.toLowerCase() === color.toLowerCase() && "ring-2 ring-ring ring-offset-2 ring-offset-popover",
                           )}
                           style={{ backgroundColor: color }}
-                          aria-label={`Set color ${color}`}
+                          aria-label={`Đặt màu ${color}`}
                         >
                           {tag.color.toLowerCase() === color.toLowerCase() && (
                             <Check className="size-3.5 text-white" strokeWidth={3} />
@@ -183,7 +183,7 @@ export function TagsPage() {
                   className="rounded-full px-2.5 py-1 text-xs font-medium"
                   style={{ backgroundColor: `${tag.color}1a`, color: tag.color }}
                 >
-                  Preview
+                  Xem trước
                 </span>
               </div>
             </article>
@@ -207,9 +207,9 @@ export function TagsPage() {
       <ConfirmDialog
         open={Boolean(deleting)}
         onOpenChange={(open) => !open && setDeleting(null)}
-        title="Delete this tag?"
-        description={`"${deleting?.name}" will be removed from every bookmark that uses it. The bookmarks themselves are kept.`}
-        confirmLabel="Delete tag"
+        title="Xóa thẻ này?"
+        description={`"${deleting?.name}" sẽ bị xóa khỏi mọi dấu trang đang sử dụng nó. Các dấu trang vẫn được giữ nguyên.`}
+        confirmLabel="Xóa thẻ"
         destructive
         onConfirm={handleDelete}
       />
@@ -262,20 +262,20 @@ function TagFormBody({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name.trim()) {
-      setError("Tag name is required");
+      setError("Tên thẻ là bắt buộc");
       return;
     }
     setBusy(true);
     try {
       if (tag) await updateTag(tag.id, { name: name.trim(), color });
       else await createTag({ name: name.trim(), color });
-      toast({ title: tag ? "Tag updated" : "Tag created", description: name.trim(), variant: "success" });
+      toast({ title: tag ? "Đã cập nhật thẻ" : "Đã tạo thẻ", description: name.trim(), variant: "success" });
       onSaved();
       onCancel();
     } catch (err) {
       toast({
-        title: tag ? "Could not update tag" : "Could not create tag",
-        description: err instanceof ApiError ? err.message : "Please try again.",
+        title: tag ? "Không thể cập nhật thẻ" : "Không thể tạo thẻ",
+        description: err instanceof ApiError ? err.message : "Vui lòng thử lại.",
         variant: "error",
       });
     } finally {
@@ -286,15 +286,15 @@ function TagFormBody({
   return (
     <form onSubmit={handleSubmit}>
       <DialogHeader>
-        <DialogTitle>{tag ? "Edit tag" : "New tag"}</DialogTitle>
+        <DialogTitle>{tag ? "Sửa thẻ" : "Thẻ mới"}</DialogTitle>
         <DialogDescription>
-          Tags are shared across bookmarks and can be renamed or recolored anytime.
+          Các thẻ được dùng chung giữa các dấu trang và có thể đổi tên hoặc đổi màu bất cứ lúc nào.
         </DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="tag-name">Name</Label>
+          <Label htmlFor="tag-name">Tên</Label>
           <Input
             id="tag-name"
             value={name}
@@ -302,7 +302,7 @@ function TagFormBody({
               setName(event.target.value);
               setError(undefined);
             }}
-            placeholder="e.g. Design inspiration"
+            placeholder="VD: Cảm hứng thiết kế"
             maxLength={40}
             autoFocus
           />
@@ -310,7 +310,7 @@ function TagFormBody({
         </div>
 
         <div className="space-y-1.5">
-          <Label>Color</Label>
+          <Label>Màu</Label>
           <div className="flex flex-wrap gap-2">
             {TAG_COLORS.map((option) => (
               <button
@@ -323,7 +323,7 @@ function TagFormBody({
                     "ring-2 ring-ring ring-offset-2 ring-offset-card",
                 )}
                 style={{ backgroundColor: option }}
-                aria-label={`Color ${option}`}
+                aria-label={`Màu ${option}`}
               >
                 {color.toLowerCase() === option.toLowerCase() && (
                   <Check className="size-4 text-white" strokeWidth={3} />
@@ -336,11 +336,11 @@ function TagFormBody({
 
       <DialogFooter>
         <Button variant="outline" onClick={onCancel} disabled={busy}>
-          Cancel
+          Hủy
         </Button>
         <Button type="submit" disabled={busy}>
           {busy && <Spinner className="size-3.5" />}
-          {tag ? "Save changes" : "Create tag"}
+          {tag ? "Lưu thay đổi" : "Tạo thẻ"}
         </Button>
       </DialogFooter>
     </form>

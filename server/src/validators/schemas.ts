@@ -3,8 +3,8 @@ import { z } from "zod";
 const colorPattern = /^#[0-9a-fA-F]{6}$/;
 
 export const createBookmarkSchema = z.object({
-  title: z.string().trim().min(1, "Title is required").max(300),
-  url: z.string().trim().min(1, "URL is required").max(2048),
+  title: z.string().trim().min(1, "Vui lòng nhập tiêu đề").max(300),
+  url: z.string().trim().min(1, "Vui lòng nhập URL").max(2048),
   description: z.string().trim().max(2000).optional(),
   faviconUrl: z.string().trim().max(2048).nullable().optional(),
   tagIds: z.array(z.string().min(1)).max(30).optional(),
@@ -13,8 +13,8 @@ export const createBookmarkSchema = z.object({
 
 export const updateBookmarkSchema = z
   .object({
-    title: z.string().trim().min(1, "Title is required").max(300).optional(),
-    url: z.string().trim().min(1, "URL is required").max(2048).optional(),
+    title: z.string().trim().min(1, "Vui lòng nhập tiêu đề").max(300).optional(),
+    url: z.string().trim().min(1, "Vui lòng nhập URL").max(2048).optional(),
     description: z.string().trim().max(2000).nullable().optional(),
     faviconUrl: z.string().trim().max(2048).nullable().optional(),
     tagIds: z.array(z.string().min(1)).max(30).optional(),
@@ -22,7 +22,7 @@ export const updateBookmarkSchema = z
     isArchived: z.boolean().optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
-    message: "Provide at least one field to update",
+    message: "Cần ít nhất một trường để cập nhật",
   });
 
 export const listBookmarksQuerySchema = z.object({
@@ -42,21 +42,21 @@ export const listBookmarksQuerySchema = z.object({
 export const idParamSchema = z.object({ id: z.string().min(1).max(64) });
 
 export const metadataSchema = z.object({
-  url: z.string().trim().min(1, "URL is required").max(2048),
+  url: z.string().trim().min(1, "Vui lòng nhập URL").max(2048),
 });
 
 export const createTagSchema = z.object({
-  name: z.string().trim().min(1, "Tag name is required").max(40),
-  color: z.string().regex(colorPattern, "Color must be a hex value like #6366f1").default("#6366f1"),
+  name: z.string().trim().min(1, "Vui lòng nhập tên thẻ").max(40),
+  color: z.string().regex(colorPattern, "Màu phải là mã hex dạng #6366f1").default("#6366f1"),
 });
 
 export const updateTagSchema = z
   .object({
-    name: z.string().trim().min(1, "Tag name is required").max(40).optional(),
-    color: z.string().regex(colorPattern, "Color must be a hex value like #6366f1").optional(),
+    name: z.string().trim().min(1, "Vui lòng nhập tên thẻ").max(40).optional(),
+    color: z.string().regex(colorPattern, "Màu phải là mã hex dạng #6366f1").optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
-    message: "Provide at least one field to update",
+    message: "Cần ít nhất một trường để cập nhật",
   });
 
 const emailSchema = z
@@ -65,17 +65,17 @@ const emailSchema = z
   .toLowerCase()
   .min(3)
   .max(254)
-  .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), { message: "Enter a valid email address" });
+  .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), { message: "Email không hợp lệ" });
 
 export const registerSchema = z.object({
   email: emailSchema,
-  password: z.string().min(8, "Password must be at least 8 characters").max(128),
+  password: z.string().min(8, "Mật khẩu phải có ít nhất 8 ký tự").max(128),
   name: z.string().trim().min(1).max(80).optional(),
 });
 
 export const loginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, "Password is required").max(128),
+  password: z.string().min(1, "Vui lòng nhập mật khẩu").max(128),
 });
 
 export const importBookmarksSchema = z.object({

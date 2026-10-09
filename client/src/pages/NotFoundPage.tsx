@@ -9,12 +9,12 @@ export function NotFoundPage() {
         <Compass className="size-7" />
       </span>
       <p className="text-sm font-semibold uppercase tracking-widest text-primary">404</p>
-      <h1 className="mt-2 text-2xl font-bold text-foreground">Page not found</h1>
+      <h1 className="mt-2 text-2xl font-bold text-foreground">Không tìm thấy trang</h1>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        The page you are looking for does not exist or has been moved.
+        Trang bạn tìm kiếm không tồn tại hoặc đã được di chuyển.
       </p>
       <Link to="/bookmarks" className={`${buttonVariants({ className: "mt-6" })}`}>
-        Back to bookmarks
+        Quay lại dấu trang
       </Link>
     </div>
   );

@@ -41,8 +41,8 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
       onChange([...selectedIds, tag.id]);
     } catch (err) {
       toast({
-        title: "Could not create tag",
-        description: err instanceof ApiError ? err.message : "Please try again.",
+        title: "Không thể tạo thẻ",
+        description: err instanceof ApiError ? err.message : "Vui lòng thử lại.",
         variant: "error",
       });
     } finally {
@@ -55,7 +55,7 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
       <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-lg border border-input bg-card px-2 py-1.5">
         {selected.length === 0 && (
           <span className="flex items-center gap-1.5 px-1 text-xs text-muted-foreground">
-            <Tags className="size-3.5" /> No tags selected
+            <Tags className="size-3.5" /> Chưa chọn thẻ nào
           </span>
         )}
         {selected.map((tag) => (
@@ -66,7 +66,7 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
             <button
               type="button"
               className="ml-auto inline-flex size-6 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              aria-label="Add tag"
+              aria-label="Thêm thẻ"
             >
               <Plus className="size-4" />
             </button>
@@ -75,7 +75,7 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
             <div className="scrollbar-thin max-h-64 space-y-0.5 overflow-y-auto">
               {tags.length === 0 && (
                 <p className="px-2 py-3 text-center text-xs text-muted-foreground">
-                  No tags yet. Create the first one below.
+                  Chưa có thẻ nào. Hãy tạo thẻ đầu tiên bên dưới.
                 </p>
               )}
               {tags.map((tag) => {
@@ -116,7 +116,7 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
                     void handleCreate();
                   }
                 }}
-                placeholder="New tag name"
+                placeholder="Tên thẻ mới"
                 className="h-8"
                 maxLength={40}
               />
@@ -127,7 +127,7 @@ export function TagMultiSelect({ selectedIds, onChange }: TagMultiSelectProps) {
                 disabled={creating || !newName.trim()}
               >
                 {creating ? <Spinner className="size-3.5" /> : <Plus className="size-3.5" />}
-                Add
+                Thêm
               </Button>
             </div>
           </PopoverContent>

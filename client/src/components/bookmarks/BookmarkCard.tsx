@@ -49,7 +49,7 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const errorMessage = (err: unknown) =>
-    err instanceof ApiError ? err.message : "The action could not be completed.";
+    err instanceof ApiError ? err.message : "Không thể thực hiện thao tác.";
 
   const openLink = () => {
     window.open(bookmark.url, "_blank", "noopener,noreferrer");
@@ -61,9 +61,9 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
   const copyLink = async () => {
     try {
       await copyToClipboard(bookmark.url);
-      toast({ title: "URL copied", description: bookmark.url, variant: "success" });
+      toast({ title: "Đã sao chép URL", description: bookmark.url, variant: "success" });
     } catch {
-      toast({ title: "Could not copy URL", description: "Clipboard access was denied.", variant: "error" });
+      toast({ title: "Không thể sao chép URL", description: "Quyền truy cập bộ nhớ tạm đã bị từ chối.", variant: "error" });
     }
   };
 
@@ -77,7 +77,7 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
       emitDataChange();
       toast({ title: successTitle, description: successDescription, variant: "success" });
     } catch (err) {
-      toast({ title: "Action failed", description: errorMessage(err), variant: "error" });
+      toast({ title: "Thao tác thất bại", description: errorMessage(err), variant: "error" });
     }
   };
 
@@ -85,9 +85,9 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
     try {
       await deleteBookmark(bookmark.id);
       emitDataChange();
-      toast({ title: "Bookmark deleted", description: bookmark.title, variant: "success" });
+      toast({ title: "Đã xóa dấu trang", description: bookmark.title, variant: "success" });
     } catch (err) {
-      toast({ title: "Could not delete bookmark", description: errorMessage(err), variant: "error" });
+      toast({ title: "Không thể xóa dấu trang", description: errorMessage(err), variant: "error" });
     }
   };
 
@@ -97,10 +97,10 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
 
   const actions = (
     <>
-      <Button size="iconSm" variant="ghost" onClick={openLink} aria-label="Open link in new tab" title="Open">
+      <Button size="iconSm" variant="ghost" onClick={openLink} aria-label="Mở liên kết trong tab mới" title="Mở">
         <ExternalLink />
       </Button>
-      <Button size="iconSm" variant="ghost" onClick={() => void copyLink()} aria-label="Copy URL" title="Copy URL">
+      <Button size="iconSm" variant="ghost" onClick={() => void copyLink()} aria-label="Sao chép URL" title="Sao chép URL">
         <Copy />
       </Button>
       <Button
@@ -109,51 +109,51 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
         onClick={() =>
           void runFlagAction(
             () => (bookmark.isPinned ? unpinBookmark(bookmark.id) : pinBookmark(bookmark.id)),
-            bookmark.isPinned ? "Bookmark unpinned" : "Bookmark pinned",
+            bookmark.isPinned ? "Đã bỏ ghim dấu trang" : "Đã ghim dấu trang",
             bookmark.title,
           )
         }
-        aria-label={bookmark.isPinned ? "Unpin bookmark" : "Pin bookmark"}
-        title={bookmark.isPinned ? "Unpin" : "Pin"}
+        aria-label={bookmark.isPinned ? "Bỏ ghim dấu trang" : "Ghim dấu trang"}
+        title={bookmark.isPinned ? "Bỏ ghim" : "Ghim"}
         className={cn(bookmark.isPinned && "text-primary")}
       >
         {bookmark.isPinned ? <PinOff /> : <Pin />}
       </Button>
-      <Button size="iconSm" variant="ghost" onClick={() => onEdit(bookmark)} aria-label="Edit bookmark" title="Edit">
+      <Button size="iconSm" variant="ghost" onClick={() => onEdit(bookmark)} aria-label="Sửa dấu trang" title="Sửa">
         <Pencil />
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="iconSm" variant="ghost" aria-label="More actions" title="More">
+          <Button size="iconSm" variant="ghost" aria-label="Thao tác khác" title="Thao tác khác">
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={openLink}>
-            <ExternalLink /> Open in new tab
+            <ExternalLink /> Mở trong tab mới
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => void copyLink()}>
-            <Copy /> Copy URL
+            <Copy /> Sao chép URL
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() =>
               void runFlagAction(
                 () =>
                   bookmark.isArchived ? restoreBookmark(bookmark.id) : archiveBookmark(bookmark.id),
-                bookmark.isArchived ? "Bookmark restored" : "Bookmark archived",
+                bookmark.isArchived ? "Đã khôi phục dấu trang" : "Đã lưu trữ dấu trang",
                 bookmark.title,
               )
             }
           >
             {bookmark.isArchived ? <ArchiveRestore /> : <Archive />}
-            {bookmark.isArchived ? "Restore" : "Archive"}
+            {bookmark.isArchived ? "Khôi phục" : "Lưu trữ"}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={() => setConfirmDelete(true)}
             className="text-destructive focus:text-destructive [&_svg]:text-destructive"
           >
-            <Trash2 /> Delete permanently
+            <Trash2 /> Xóa vĩnh viễn
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -162,11 +162,11 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
 
   const meta = (
     <>
-      <span className="flex items-center gap-1" title={`${bookmark.viewCount} visits`}>
+      <span className="flex items-center gap-1" title={`${bookmark.viewCount} lượt truy cập`}>
         <Eye className="size-3" />
         {formatCount(bookmark.viewCount)}
       </span>
-      <span className="flex items-center gap-1" title={`Last visited: ${formatDate(bookmark.lastVisitedAt)}`}>
+      <span className="flex items-center gap-1" title={`Lần truy cập cuối: ${formatDate(bookmark.lastVisitedAt)}`}>
         {formatRelativeTime(bookmark.lastVisitedAt ?? bookmark.createdAt)}
       </span>
     </>
@@ -176,12 +176,12 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
     <>
       {bookmark.isPinned && (
         <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
-          <Pin className="size-3 fill-current" /> Pinned
+          <Pin className="size-3 fill-current" /> Đã ghim
         </span>
       )}
       {bookmark.isArchived && (
         <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-          <Archive className="size-3" /> Archived
+          <Archive className="size-3" /> Đã lưu trữ
         </span>
       )}
     </>
@@ -222,7 +222,7 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
       {layout === "grid" ? (
         <article className="group relative flex h-full flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md">
           <div className="flex items-start gap-3">
-            <button type="button" onClick={openLink} aria-label={`Open ${bookmark.title}`} className="shrink-0">
+            <button type="button" onClick={openLink} aria-label={`Mở ${bookmark.title}`} className="shrink-0">
               <Favicon url={bookmark.faviconUrl} title={bookmark.title} className="size-10 text-base" />
             </button>
             <div className="min-w-0 flex-1">
@@ -245,20 +245,20 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
           </div>
 
           <p className="line-clamp-2 min-h-[2rem] text-xs leading-relaxed text-muted-foreground">
-            {bookmark.description || "No description provided."}
+            {bookmark.description || "Không có mô tả."}
           </p>
 
           <div className="mt-auto space-y-3">
             {tagList}
             <div className="flex items-center justify-between border-t border-border/70 pt-3 text-[11px] text-muted-foreground">
               <div className="flex items-center gap-3">{meta}</div>
-              <span>Added {formatDate(bookmark.createdAt)}</span>
+              <span>Đã thêm {formatDate(bookmark.createdAt)}</span>
             </div>
           </div>
         </article>
       ) : (
         <article className="group flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all duration-150 hover:border-primary/30 hover:shadow-sm sm:flex-row sm:items-center sm:gap-4">
-          <button type="button" onClick={openLink} aria-label={`Open ${bookmark.title}`} className="shrink-0 self-start sm:self-auto">
+          <button type="button" onClick={openLink} aria-label={`Mở ${bookmark.title}`} className="shrink-0 self-start sm:self-auto">
             <Favicon url={bookmark.faviconUrl} title={bookmark.title} className="size-9 text-sm" />
           </button>
 
@@ -288,9 +288,9 @@ export function BookmarkCard({ bookmark, layout, onEdit, onTagSelect }: Bookmark
       <ConfirmDialog
         open={confirmDelete}
         onOpenChange={setConfirmDelete}
-        title="Delete this bookmark?"
-        description={`"${bookmark.title}" will be removed permanently. This cannot be undone.`}
-        confirmLabel="Delete"
+        title="Xóa dấu trang này?"
+        description={`"${bookmark.title}" sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.`}
+        confirmLabel="Xóa"
         destructive
         onConfirm={handleDelete}
       />

@@ -25,9 +25,9 @@ export function LoginPage() {
 
   const validate = () => {
     const next: { email?: string; password?: string } = {};
-    if (!email.trim()) next.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Enter a valid email";
-    if (!password) next.password = "Password is required";
+    if (!email.trim()) next.email = "Email là bắt buộc";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Vui lòng nhập email hợp lệ";
+    if (!password) next.password = "Mật khẩu là bắt buộc";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -42,7 +42,7 @@ export function LoginPage() {
       await login(email.trim().toLowerCase(), password);
       navigate("/bookmarks", { replace: true });
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : "Could not sign in. Please try again.");
+      setFormError(err instanceof ApiError ? err.message : "Không thể đăng nhập. Vui lòng thử lại.");
     } finally {
       setBusy(false);
     }
@@ -57,13 +57,13 @@ export function LoginPage() {
 
   return (
     <AuthCard
-      title="Welcome back"
-      subtitle="Sign in to access your saved links, tags and collections."
+      title="Chào mừng trở lại"
+      subtitle="Đăng nhập để truy cập các liên kết, thẻ và bộ sưu tập của bạn."
       footer={
         <>
-          New here?{" "}
+          Lần đầu đến đây?{" "}
           <Link to="/register" className="font-medium text-primary hover:underline">
-            Create an account
+            Tạo tài khoản
           </Link>
         </>
       }
@@ -78,7 +78,7 @@ export function LoginPage() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder="ban@email.com"
               className="pl-9"
               autoComplete="email"
               autoFocus
@@ -88,7 +88,7 @@ export function LoginPage() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Mật khẩu</Label>
           <div className="relative">
             <KeyRound className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -112,7 +112,7 @@ export function LoginPage() {
 
         <Button type="submit" className="w-full" disabled={busy}>
           {busy && <Spinner className="size-4" />}
-          Sign in
+          Đăng nhập
         </Button>
 
         <button
@@ -120,7 +120,7 @@ export function LoginPage() {
           onClick={fillDemo}
           className="w-full rounded-lg border border-dashed border-border px-3 py-2.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
         >
-          Use demo account · demo@example.com / password123
+          Dùng tài khoản demo · demo@example.com / password123
         </button>
       </form>
     </AuthCard>

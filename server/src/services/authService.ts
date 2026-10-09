@@ -27,7 +27,7 @@ function toUserDto(user: { id: string; email: string; name: string | null; creat
 
 export async function register(input: RegisterInput): Promise<AuthResult> {
   const existing = await prisma.user.findUnique({ where: { email: input.email } });
-  if (existing) throw conflict("An account with this email already exists");
+  if (existing) throw conflict("Email này đã được đăng ký");
 
   const user = await prisma.user.create({
     data: {
@@ -43,7 +43,7 @@ export async function register(input: RegisterInput): Promise<AuthResult> {
 export async function login(input: LoginInput): Promise<AuthResult> {
   const user = await prisma.user.findUnique({ where: { email: input.email } });
   if (!user || !verifyPassword(input.password, user.passwordHash)) {
-    throw unauthorized("Incorrect email or password");
+    throw unauthorized("Email hoặc mật khẩu không đúng");
   }
 
   return { token: signToken({ sub: user.id, email: user.email }), user: toUserDto(user) };
@@ -51,6 +51,6 @@ export async function login(input: LoginInput): Promise<AuthResult> {
 
 export async function getProfile(userId: string): Promise<UserDto> {
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user) throw notFound("Account not found");
+  if (!user) throw notFound("Không tìm thấy tài khoản");
   return toUserDto(user);
 }

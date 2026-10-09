@@ -25,7 +25,7 @@ export function ConfirmDialog({
   onOpenChange,
   title,
   description,
-  confirmLabel = "Confirm",
+  confirmLabel = "Xác nhận",
   destructive = false,
   onConfirm,
 }: ConfirmDialogProps) {
@@ -50,7 +50,7 @@ export function ConfirmDialog({
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>
-            Cancel
+            Hủy
           </Button>
           <Button
             variant={destructive ? "destructive" : "default"}

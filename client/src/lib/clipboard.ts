@@ -15,5 +15,5 @@ export async function copyToClipboard(text: string): Promise<void> {
   const succeeded = document.execCommand("copy");
   document.body.removeChild(textarea);
 
-  if (!succeeded) throw new Error("Clipboard is not available");
+  if (!succeeded) throw new Error("Không thể sao chép vào bộ nhớ tạm");
 }

@@ -30,7 +30,7 @@ export async function createTag(userId: string, input: CreateTagInput): Promise<
   const existing = await prisma.tag.findFirst({
     where: { userId, name: { equals: input.name, mode: "insensitive" } },
   });
-  if (existing) throw conflict(`Tag "${input.name}" already exists`);
+  if (existing) throw conflict(`Thẻ "${input.name}" đã tồn tại`);
 
   try {
     const tag = await prisma.tag.create({
@@ -46,7 +46,7 @@ export async function createTag(userId: string, input: CreateTagInput): Promise<
     };
   } catch (err) {
     if ((err as { code?: string }).code === "P2002") {
-      throw conflict(`Tag "${input.name}" already exists`);
+      throw conflict(`Thẻ "${input.name}" đã tồn tại`);
     }
     throw err;
   }
@@ -58,13 +58,13 @@ export async function updateTag(
   input: UpdateTagInput,
 ): Promise<TagWithCount> {
   const existing = await prisma.tag.findFirst({ where: { id, userId } });
-  if (!existing) throw notFound("Tag not found");
+  if (!existing) throw notFound("Không tìm thấy thẻ");
 
   if (input.name !== undefined && input.name !== existing.name) {
     const duplicate = await prisma.tag.findFirst({
       where: { userId, name: { equals: input.name, mode: "insensitive" }, NOT: { id } },
     });
-    if (duplicate) throw conflict(`Tag "${input.name}" already exists`);
+    if (duplicate) throw conflict(`Thẻ "${input.name}" đã tồn tại`);
   }
 
   try {
@@ -85,7 +85,7 @@ export async function updateTag(
     };
   } catch (err) {
     if ((err as { code?: string }).code === "P2002") {
-      throw conflict("A tag with this name already exists");
+      throw conflict("Thẻ với tên này đã tồn tại");
     }
     throw err;
   }
@@ -93,13 +93,13 @@ export async function updateTag(
 
 export async function deleteTag(userId: string, id: string): Promise<void> {
   const existing = await prisma.tag.findFirst({ where: { id, userId }, select: { id: true } });
-  if (!existing) throw notFound("Tag not found");
+  if (!existing) throw notFound("Không tìm thấy thẻ");
   await prisma.tag.delete({ where: { id } });
 }
 
 export async function findOrCreateTag(userId: string, name: string): Promise<string> {
   const trimmed = name.trim().slice(0, 40);
-  if (!trimmed) throw new Error("Tag name is required");
+  if (!trimmed) throw new Error("Tên thẻ là bắt buộc");
 
   const existing = await prisma.tag.findFirst({
     where: { userId, name: { equals: trimmed, mode: "insensitive" } },

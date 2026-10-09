@@ -44,7 +44,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
   const items: NavItem[] = [
     {
       key: "all",
-      label: "All Bookmarks",
+      label: "Tất cả dấu trang",
       icon: BookmarkIcon,
       count: stats.all,
       to: "/bookmarks",
@@ -52,7 +52,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     },
     {
       key: "pinned",
-      label: "Pinned",
+      label: "Đã ghim",
       icon: Pin,
       count: stats.pinned,
       to: "/bookmarks?view=pinned",
@@ -60,21 +60,21 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     },
     {
       key: "recent",
-      label: "Recently Visited",
+      label: "Truy cập gần đây",
       icon: Clock,
       to: "/bookmarks?sort=recentlyVisited",
       active: onBookmarks && view === "all" && sort === "recentlyVisited",
     },
     {
       key: "popular",
-      label: "Most Visited",
+      label: "Xem nhiều nhất",
       icon: TrendingUp,
       to: "/bookmarks?sort=mostVisited",
       active: onBookmarks && view === "all" && sort === "mostVisited",
     },
     {
       key: "archived",
-      label: "Archived",
+      label: "Đã lưu trữ",
       icon: Archive,
       count: stats.archived,
       to: "/bookmarks?view=archived",
@@ -92,14 +92,14 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         </span>
         <div className="leading-tight">
           <p className="text-sm font-bold text-foreground">Bookmark Manager</p>
-          <p className="text-[11px] text-muted-foreground">Personal link library</p>
+          <p className="text-[11px] text-muted-foreground">Thư viện liên kết cá nhân</p>
         </div>
       </div>
 
       <nav className="scrollbar-thin flex-1 space-y-6 overflow-y-auto px-3 py-4">
         <div>
           <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Library
+            Thư viện
           </p>
           <ul className="space-y-0.5">
             {items.map((item) => (
@@ -135,7 +135,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
 
         <div>
           <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Tags
+            Thẻ
           </p>
           <ul className="space-y-0.5">
             {tags.slice(0, 6).map((tag) => {
@@ -171,7 +171,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
                 )}
               >
                 <TagsIcon className="size-4 shrink-0" />
-                <span className="flex-1">Manage tags</span>
+                <span className="flex-1">Quản lý thẻ</span>
                 <span className="text-[11px] tabular-nums text-muted-foreground">{tags.length}</span>
               </NavLink>
             </li>
@@ -180,7 +180,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
 
         <div>
           <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            General
+            Chung
           </p>
           <NavLink
             to="/settings"
@@ -193,7 +193,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
             )}
           >
             <Settings className="size-4 shrink-0" />
-            Settings
+            Cài đặt
           </NavLink>
         </div>
       </nav>
@@ -204,7 +204,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
             {initials}
           </span>
           <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-sm font-semibold text-foreground">{user?.name ?? "Account"}</p>
+            <p className="truncate text-sm font-semibold text-foreground">{user?.name ?? "Tài khoản"}</p>
             <p className="truncate text-[11px] text-muted-foreground">{user?.email}</p>
           </div>
         </div>

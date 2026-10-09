@@ -50,10 +50,10 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
   const initials = (user?.name || user?.email || "?").slice(0, 2).toUpperCase();
   const pageTitle =
     location.pathname === "/tags"
-      ? "Tags"
+      ? "Thẻ"
       : location.pathname === "/settings"
-        ? "Settings"
-        : "Bookmarks";
+        ? "Cài đặt"
+        : "Dấu trang";
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
@@ -62,7 +62,7 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
           type="button"
           onClick={onMenuClick}
           className="rounded-lg p-2 text-muted-foreground transition hover:bg-muted hover:text-foreground lg:hidden"
-          aria-label="Open navigation"
+          aria-label="Mở điều hướng"
         >
           <Menu className="size-5" />
         </button>
@@ -71,10 +71,10 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
           <p className="truncate text-sm font-semibold text-foreground">{pageTitle}</p>
           <p className="text-[11px] text-muted-foreground">
             {location.pathname === "/bookmarks"
-              ? "Search, sort and filter your library"
+              ? "Tìm kiếm, sắp xếp và lọc thư viện của bạn"
               : location.pathname === "/tags"
-                ? "Organize your bookmarks with tags"
-                : "Preferences and data"}
+                ? "Tổ chức dấu trang của bạn bằng thẻ"
+                : "Tùy chọn và dữ liệu"}
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
               type="search"
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="Search bookmarks…"
-              aria-label="Search bookmarks"
+              placeholder="Tìm kiếm dấu trang…"
+              aria-label="Tìm kiếm dấu trang"
               className="h-9 w-full rounded-lg border border-input bg-card pl-9 pr-9 text-sm text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
             {searchInput && (
@@ -94,7 +94,7 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
                 type="button"
                 onClick={() => setSearchInput("")}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground transition hover:text-foreground"
-                aria-label="Clear search"
+                aria-label="Xóa tìm kiếm"
               >
                 <X className="size-4" />
               </button>
@@ -107,17 +107,17 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            aria-label={theme === "dark" ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối"}
+            title={theme === "dark" ? "Chế độ sáng" : "Chế độ tối"}
           >
             {theme === "dark" ? <Sun /> : <Moon />}
           </Button>
 
           <Button onClick={onAddClick} className="hidden sm:inline-flex">
             <BookmarkPlus />
-            Add bookmark
+            Thêm dấu trang
           </Button>
-          <Button onClick={onAddClick} size="icon" className="sm:hidden" aria-label="Add bookmark">
+          <Button onClick={onAddClick} size="icon" className="sm:hidden" aria-label="Thêm dấu trang">
             <BookmarkPlus />
           </Button>
 
@@ -126,25 +126,25 @@ export function Header({ onMenuClick, onAddClick }: HeaderProps) {
               <button
                 type="button"
                 className="ml-1 flex size-9 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground ring-2 ring-transparent transition hover:ring-primary/40"
-                aria-label="Account menu"
+                aria-label="Menu tài khoản"
               >
                 {initials}
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-60">
-              <DropdownMenuLabel>Signed in as</DropdownMenuLabel>
+              <DropdownMenuLabel>Đăng nhập với tư cách</DropdownMenuLabel>
               <p className="truncate px-2.5 pb-2 text-sm text-foreground">{user?.email}</p>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/settings">
-                  <Settings /> Settings
+                  <Settings /> Cài đặt
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={logout}
                 className="text-destructive focus:text-destructive [&_svg]:text-destructive"
               >
-                <LogOut /> Log out
+                <LogOut /> Đăng xuất
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

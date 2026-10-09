@@ -22,7 +22,7 @@ function FullScreenLoader({ label }: { label: string }) {
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user, initializing } = useAuth();
 
-  if (initializing) return <FullScreenLoader label="Loading your library…" />;
+  if (initializing) return <FullScreenLoader label="Đang tải thư viện của bạn…" />;
   if (!user) return <Navigate to="/login" replace />;
   return <AppShell>{children}</AppShell>;
 }
@@ -30,7 +30,7 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
 function GuestRoute({ children }: { children: ReactNode }) {
   const { user, initializing } = useAuth();
 
-  if (initializing) return <FullScreenLoader label="Checking your session…" />;
+  if (initializing) return <FullScreenLoader label="Đang kiểm tra phiên đăng nhập…" />;
   if (user) return <Navigate to="/bookmarks" replace />;
   return <>{children}</>;
 }

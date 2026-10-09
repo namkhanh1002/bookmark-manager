@@ -24,11 +24,11 @@ export function RegisterPage() {
 
   const validate = () => {
     const next: typeof errors = {};
-    if (name.trim().length > 80) next.name = "Name must be 80 characters or fewer";
-    if (!email.trim()) next.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Enter a valid email";
-    if (password.length < 8) next.password = "Password must be at least 8 characters";
-    if (confirm !== password) next.confirm = "Passwords do not match";
+    if (name.trim().length > 80) next.name = "Tên tối đa 80 ký tự";
+    if (!email.trim()) next.email = "Email là bắt buộc";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Vui lòng nhập email hợp lệ";
+    if (password.length < 8) next.password = "Mật khẩu phải có ít nhất 8 ký tự";
+    if (confirm !== password) next.confirm = "Mật khẩu không khớp";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -43,7 +43,7 @@ export function RegisterPage() {
       await register(email.trim().toLowerCase(), password, name.trim() || undefined);
       navigate("/bookmarks", { replace: true });
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : "Could not create the account.");
+      setFormError(err instanceof ApiError ? err.message : "Không thể tạo tài khoản.");
     } finally {
       setBusy(false);
     }
@@ -51,27 +51,27 @@ export function RegisterPage() {
 
   return (
     <AuthCard
-      title="Create your account"
-      subtitle="Start organizing the web into a library that actually makes sense."
+      title="Tạo tài khoản của bạn"
+      subtitle="Bắt đầu sắp xếp web thành một thư viện thực sự có ý nghĩa."
       footer={
         <>
-          Already have an account?{" "}
+          Đã có tài khoản?{" "}
           <Link to="/login" className="font-medium text-primary hover:underline">
-            Sign in
+            Đăng nhập
           </Link>
         </>
       }
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">Tên</Label>
           <div className="relative">
             <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               id="name"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Jane Doe (optional)"
+              placeholder="Nguyễn Văn A (tùy chọn)"
               className="pl-9"
               autoComplete="name"
               autoFocus
@@ -89,7 +89,7 @@ export function RegisterPage() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder="ban@email.com"
               className="pl-9"
               autoComplete="email"
             />
@@ -98,7 +98,7 @@ export function RegisterPage() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="register-password">Password</Label>
+          <Label htmlFor="register-password">Mật khẩu</Label>
           <div className="relative">
             <KeyRound className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -106,7 +106,7 @@ export function RegisterPage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="At least 8 characters"
+              placeholder="Ít nhất 8 ký tự"
               className="pl-9"
               autoComplete="new-password"
             />
@@ -115,7 +115,7 @@ export function RegisterPage() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="confirm-password">Confirm password</Label>
+          <Label htmlFor="confirm-password">Xác nhận mật khẩu</Label>
           <div className="relative">
             <KeyRound className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -123,7 +123,7 @@ export function RegisterPage() {
               type="password"
               value={confirm}
               onChange={(event) => setConfirm(event.target.value)}
-              placeholder="Repeat your password"
+              placeholder="Nhập lại mật khẩu của bạn"
               className="pl-9"
               autoComplete="new-password"
             />
@@ -139,7 +139,7 @@ export function RegisterPage() {
 
         <Button type="submit" className="w-full" disabled={busy}>
           {busy && <Spinner className="size-4" />}
-          Create account
+          Tạo tài khoản
         </Button>
       </form>
     </AuthCard>

@@ -47,14 +47,14 @@ export function SettingsPage() {
       URL.revokeObjectURL(url);
 
       toast({
-        title: "Export ready",
-        description: `${bookmarks.length} bookmarks were exported as JSON.`,
+        title: "Xuất file thành công",
+        description: `Đã xuất ${bookmarks.length} dấu trang dưới dạng JSON.`,
         variant: "success",
       });
     } catch (err) {
       toast({
-        title: "Export failed",
-        description: err instanceof ApiError ? err.message : "Please try again.",
+        title: "Xuất file thất bại",
+        description: err instanceof ApiError ? err.message : "Vui lòng thử lại.",
         variant: "error",
       });
     } finally {
@@ -72,7 +72,7 @@ export function SettingsPage() {
         : (parsed as { bookmarks?: unknown })?.bookmarks;
 
       if (!Array.isArray(rawList)) {
-        throw new Error("File must contain a list of bookmarks");
+        throw new Error("Tệp phải chứa một danh sách dấu trang");
       }
 
       const bookmarks = rawList
@@ -104,24 +104,24 @@ export function SettingsPage() {
           };
         });
 
-      if (bookmarks.length === 0) throw new Error("No valid bookmarks found in the file");
+      if (bookmarks.length === 0) throw new Error("Không tìm thấy dấu trang hợp lệ trong tệp");
 
       const result = await importBookmarks({ bookmarks });
       emitDataChange();
       toast({
-        title: "Import finished",
-        description: `${result.imported} imported, ${result.skipped} skipped as duplicates.`,
+        title: "Nhập file hoàn tất",
+        description: `Đã nhập ${result.imported}, bỏ qua ${result.skipped} mục trùng lặp.`,
         variant: "success",
       });
     } catch (err) {
       toast({
-        title: "Import failed",
+        title: "Nhập file thất bại",
         description:
           err instanceof ApiError
             ? err.message
             : err instanceof Error
               ? err.message
-              : "Invalid JSON file.",
+              : "Tệp JSON không hợp lệ.",
         variant: "error",
       });
     } finally {
@@ -133,23 +133,23 @@ export function SettingsPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <header>
-        <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Settings</h1>
+        <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Cài đặt</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Manage your appearance, account and bookmark data.
+          Quản lý giao diện, tài khoản và dữ liệu dấu trang của bạn.
         </p>
       </header>
 
       <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="flex items-center gap-2">
           <User className="size-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Account</h2>
+          <h2 className="text-sm font-semibold text-foreground">Tài khoản</h2>
         </div>
         <div className="mt-4 space-y-3">
           {user ? (
             <>
-              <Row label="Name" value={user.name ?? "—"} />
+              <Row label="Tên" value={user.name ?? "—"} />
               <Row label="Email" value={user.email} />
-              <Row label="Member since" value={formatDate(user.createdAt)} />
+              <Row label="Thành viên từ" value={formatDate(user.createdAt)} />
             </>
           ) : (
             <>
@@ -163,16 +163,16 @@ export function SettingsPage() {
       <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="flex items-center gap-2">
           <Monitor className="size-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Appearance</h2>
+          <h2 className="text-sm font-semibold text-foreground">Giao diện</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Your choice is remembered on this device.
+          Lựa chọn của bạn sẽ được ghi nhớ trên thiết bị này.
         </p>
         <div className="mt-4 inline-flex rounded-xl border border-border bg-background p-1">
           {(
             [
-              { key: "light", label: "Light", icon: <Sun className="size-4" /> },
-              { key: "dark", label: "Dark", icon: <Moon className="size-4" /> },
+              { key: "light", label: "Sáng", icon: <Sun className="size-4" /> },
+              { key: "dark", label: "Tối", icon: <Moon className="size-4" /> },
             ] as const
           ).map((option) => (
             <button
@@ -195,20 +195,20 @@ export function SettingsPage() {
       <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="flex items-center gap-2">
           <Upload className="size-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Data</h2>
+          <h2 className="text-sm font-semibold text-foreground">Dữ liệu</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Export your library as JSON, or import a previously exported file. Duplicates are skipped
-          automatically.
+          Xuất thư viện của bạn dưới dạng JSON, hoặc nhập tệp đã xuất trước đó. Các mục trùng lặp
+          sẽ được tự động bỏ qua.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Button variant="outline" onClick={() => void handleExport()} disabled={exporting}>
             {exporting ? <Spinner className="size-4" /> : <Download />}
-            Export JSON
+            Xuất JSON
           </Button>
           <Button variant="outline" onClick={() => fileRef.current?.click()} disabled={importing}>
             {importing ? <Spinner className="size-4" /> : <Upload />}
-            Import JSON
+            Nhập JSON
           </Button>
           <input
             ref={fileRef}
@@ -224,22 +224,22 @@ export function SettingsPage() {
       </section>
 
       <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-foreground">About</h2>
+        <h2 className="text-sm font-semibold text-foreground">Giới thiệu</h2>
         <dl className="mt-3 grid grid-cols-1 gap-2 text-xs text-muted-foreground sm:grid-cols-2">
           <div className="flex justify-between gap-3 rounded-lg bg-muted/60 px-3 py-2">
-            <dt>Frontend</dt>
+            <dt>Giao diện</dt>
             <dd className="font-medium text-foreground">React · TypeScript · Vite · Tailwind</dd>
           </div>
           <div className="flex justify-between gap-3 rounded-lg bg-muted/60 px-3 py-2">
-            <dt>Backend</dt>
+            <dt>Máy chủ</dt>
             <dd className="font-medium text-foreground">Express · Zod · JWT</dd>
           </div>
           <div className="flex justify-between gap-3 rounded-lg bg-muted/60 px-3 py-2">
-            <dt>Database</dt>
+            <dt>Cơ sở dữ liệu</dt>
             <dd className="font-medium text-foreground">PostgreSQL · Prisma</dd>
           </div>
           <div className="flex justify-between gap-3 rounded-lg bg-muted/60 px-3 py-2">
-            <dt>Version</dt>
+            <dt>Phiên bản</dt>
             <dd className="font-medium text-foreground">1.0.0</dd>
           </div>
         </dl>

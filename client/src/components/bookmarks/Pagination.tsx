@@ -34,7 +34,7 @@ export function Pagination({ meta, onPageChange, disabled = false }: PaginationP
   return (
     <div className="mt-6 flex flex-col items-center justify-between gap-3 sm:flex-row">
       <p className="text-xs text-muted-foreground">
-        Showing {start}–{end} of {meta.total}
+        Hiển thị {start}–{end} trong tổng số {meta.total}
       </p>
 
       <div className="flex items-center gap-1">
@@ -43,7 +43,7 @@ export function Pagination({ meta, onPageChange, disabled = false }: PaginationP
           disabled={disabled || meta.page <= 1}
           onClick={() => onPageChange(meta.page - 1)}
           className={cn(buttonVariants({ variant: "outline", size: "iconSm" }), "disabled:opacity-40")}
-          aria-label="Previous page"
+          aria-label="Trang trước"
         >
           <ChevronLeft />
         </button>
@@ -74,7 +74,7 @@ export function Pagination({ meta, onPageChange, disabled = false }: PaginationP
           disabled={disabled || meta.page >= meta.totalPages}
           onClick={() => onPageChange(meta.page + 1)}
           className={cn(buttonVariants({ variant: "outline", size: "iconSm" }), "disabled:opacity-40")}
-          aria-label="Next page"
+          aria-label="Trang sau"
         >
           <ChevronRight />
         </button>

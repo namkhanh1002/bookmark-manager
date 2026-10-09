@@ -66,10 +66,10 @@ const flagHandler =
     res.json({ success: true, data: bookmark, message });
   });
 
-export const pinHandler = flagHandler(pinBookmark, "Bookmark pinned");
-export const unpinHandler = flagHandler(unpinBookmark, "Bookmark unpinned");
-export const archiveHandler = flagHandler(archiveBookmark, "Bookmark archived");
-export const restoreHandler = flagHandler(restoreBookmark, "Bookmark restored");
+export const pinHandler = flagHandler(pinBookmark, "Đã ghim dấu trang");
+export const unpinHandler = flagHandler(unpinBookmark, "Đã bỏ ghim dấu trang");
+export const archiveHandler = flagHandler(archiveBookmark, "Đã lưu trữ dấu trang");
+export const restoreHandler = flagHandler(restoreBookmark, "Đã khôi phục dấu trang");
 
 export const visitHandler = asyncHandler(async (req: Request, res: Response) => {
   const userId = requireUserId(req);

@@ -34,7 +34,7 @@ export function TagBadge({ tag, onRemove, className, ...props }: TagBadgeProps) 
             onRemove();
           }}
           className="-mr-1 rounded-full px-1 hover:bg-black/10 dark:hover:bg-white/10"
-          aria-label={`Remove tag ${tag.name}`}
+          aria-label={`Xóa thẻ ${tag.name}`}
         >
           ×
         </button>

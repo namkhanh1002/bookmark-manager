@@ -38,7 +38,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => setSidebarOpen(false)}
                 className="absolute -right-11 top-4 rounded-lg bg-card p-2 text-muted-foreground shadow-lg transition hover:text-foreground"
-                aria-label="Close navigation"
+                aria-label="Đóng điều hướng"
               >
                 ✕
               </button>

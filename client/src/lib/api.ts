@@ -79,7 +79,7 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
     });
   } catch (err) {
     if ((err as Error).name === "AbortError") throw err;
-    throw new ApiError(0, "NETWORK_ERROR", "Unable to reach the server. Check your connection.");
+    throw new ApiError(0, "NETWORK_ERROR", "Không thể kết nối đến máy chủ. Kiểm tra đường truyền của bạn.");
   }
 
   let payload: unknown = null;
@@ -97,7 +97,7 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
     const apiError = new ApiError(
       response.status,
       errorBody?.code ?? "UNKNOWN_ERROR",
-      errorBody?.message ?? `Request failed with status ${response.status}`,
+      errorBody?.message ?? `Yêu cầu thất bại với mã trạng thái ${response.status}`,
       errorBody?.details,
     );
 

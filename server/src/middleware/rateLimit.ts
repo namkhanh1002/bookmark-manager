@@ -10,7 +10,7 @@ export const apiLimiter = rateLimit({
   limit: 600,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  message: jsonMessage("Too many requests from this IP, please try again later."),
+  message: jsonMessage("Quá nhiều yêu cầu từ IP này, vui lòng thử lại sau."),
 });
 
 export const authLimiter = rateLimit({
@@ -18,7 +18,7 @@ export const authLimiter = rateLimit({
   limit: 30,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  message: jsonMessage("Too many authentication attempts, please try again in a few minutes."),
+  message: jsonMessage("Quá nhiều lần thử đăng nhập, vui lòng thử lại sau vài phút."),
 });
 
 export const metadataLimiter = rateLimit({
@@ -26,5 +26,5 @@ export const metadataLimiter = rateLimit({
   limit: 20,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  message: jsonMessage("Metadata fetching rate limit reached, please wait a moment."),
+  message: jsonMessage("Đã đạt giới hạn lấy metadata, vui lòng đợi lát nữa."),
 });

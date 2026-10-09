@@ -70,7 +70,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => remove(item.id)}
               className="rounded-md p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              aria-label="Dismiss notification"
+              aria-label="Đóng thông báo"
             >
               <X className="h-4 w-4" />
             </button>

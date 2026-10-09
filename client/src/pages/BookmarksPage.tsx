@@ -14,9 +14,9 @@ import { useAddBookmark } from "../components/layout/AppShell";
 import type { Bookmark, BookmarkQuery, SortOption, TagMode, ViewKey } from "../types";
 
 const VIEW_COPY: Record<ViewKey, { title: string; subtitle: string }> = {
-  all: { title: "All bookmarks", subtitle: "Everything you have saved in one place." },
-  pinned: { title: "Pinned", subtitle: "The links you reach for the most." },
-  archived: { title: "Archived", subtitle: "Stored away — restore any of them anytime." },
+  all: { title: "Tất cả dấu trang", subtitle: "Mọi thứ bạn đã lưu ở một nơi." },
+  pinned: { title: "Đã ghim", subtitle: "Những liên kết bạn sử dụng nhiều nhất." },
+  archived: { title: "Đã lưu trữ", subtitle: "Đã cất giữ — khôi phục bất kỳ lúc nào." },
 };
 
 export function BookmarksPage() {
@@ -90,7 +90,7 @@ export function BookmarksPage() {
         </div>
         <Button onClick={openAddDialog} className="shadow-sm">
           <BookmarkPlus />
-          Add bookmark
+          Thêm dấu trang
         </Button>
       </header>
 
@@ -112,31 +112,31 @@ export function BookmarksPage() {
       {error ? (
         <EmptyState
           icon={<Inbox className="size-6" />}
-          title="We could not load your bookmarks"
+          title="Không thể tải dấu trang của bạn"
           description={error}
-          action={{ label: "Try again", onClick: refresh }}
+          action={{ label: "Thử lại", onClick: refresh }}
         />
       ) : items.length === 0 ? (
         hasFilters ? (
           <EmptyState
             icon={<SearchX className="size-6" />}
-            title="No bookmarks match your filters"
-            description="Try a different search term, or clear the active tag filters."
-            action={{ label: "Clear filters", onClick: clearFilters }}
+            title="Không có dấu trang nào khớp với bộ lọc"
+            description="Hãy thử từ khóa khác, hoặc xóa bộ lọc thẻ đang áp dụng."
+            action={{ label: "Xóa bộ lọc", onClick: clearFilters }}
           />
         ) : (
           <EmptyState
             icon={<FolderOpen className="size-6" />}
-            title={query.view === "archived" ? "Nothing archived yet" : "Your library is empty"}
+            title={query.view === "archived" ? "Chưa có gì được lưu trữ" : "Thư viện của bạn đang trống"}
             description={
               query.view === "archived"
-                ? "Bookmarks you archive will show up here, safely stored with their tags."
-                : "Save your first link and start building your personal knowledge base."
+                ? "Những dấu trang bạn lưu trữ sẽ hiển thị tại đây, được giữ an toàn cùng các thẻ."
+                : "Lưu liên kết đầu tiên và bắt đầu xây dựng kho kiến thức của riêng bạn."
             }
             action={
               query.view === "archived"
-                ? { label: "Back to all bookmarks", onClick: clearFilters }
-                : { label: "Add your first bookmark", onClick: openAddDialog }
+                ? { label: "Quay lại tất cả dấu trang", onClick: clearFilters }
+                : { label: "Thêm dấu trang đầu tiên", onClick: openAddDialog }
             }
           />
         )

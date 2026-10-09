@@ -171,7 +171,7 @@ export async function getBookmark(userId: string, id: string): Promise<BookmarkD
     where: { id, userId },
     include: bookmarkWithTags,
   });
-  if (!bookmark) throw notFound("Bookmark not found");
+  if (!bookmark) throw notFound("Không tìm thấy dấu trang");
   return toBookmarkDto(bookmark);
 }
 
@@ -180,7 +180,7 @@ async function assertTagsOwned(userId: string, tagIds: string[]): Promise<string
   if (unique.length === 0) return [];
 
   const owned = await prisma.tag.count({ where: { id: { in: unique }, userId } });
-  if (owned !== unique.length) throw badRequest("One or more tags do not exist");
+  if (owned !== unique.length) throw badRequest("Một số thẻ không tồn tại");
   return unique;
 }
 
@@ -212,7 +212,7 @@ export async function createBookmark(
   } catch (err) {
     if (err instanceof ApiError) throw err;
     if (err && typeof err === "object" && (err as { code?: string }).code === "P2002") {
-      throw conflict("You already saved this URL");
+      throw conflict("Bạn đã lưu URL này rồi");
     }
     throw err;
   }
@@ -224,7 +224,7 @@ export async function updateBookmark(
   input: UpdateBookmarkInput,
 ): Promise<BookmarkDto> {
   const existing = await prisma.bookmark.findFirst({ where: { id, userId } });
-  if (!existing) throw notFound("Bookmark not found");
+  if (!existing) throw notFound("Không tìm thấy dấu trang");
 
   const data: Prisma.BookmarkUpdateInput = {};
 
@@ -242,7 +242,7 @@ export async function updateBookmark(
         where: { userId, normalizedUrl, NOT: { id } },
         select: { id: true },
       });
-      if (duplicate) throw conflict("You already saved this URL");
+      if (duplicate) throw conflict("Bạn đã lưu URL này rồi");
     }
     data.url = url;
     data.normalizedUrl = normalizedUrl;
@@ -265,7 +265,7 @@ export async function updateBookmark(
     return toBookmarkDto(updated);
   } catch (err) {
     if (err && typeof err === "object" && (err as { code?: string }).code === "P2002") {
-      throw conflict("You already saved this URL");
+      throw conflict("Bạn đã lưu URL này rồi");
     }
     throw err;
   }
@@ -273,7 +273,7 @@ export async function updateBookmark(
 
 export async function deleteBookmark(userId: string, id: string): Promise<void> {
   const existing = await prisma.bookmark.findFirst({ where: { id, userId }, select: { id: true } });
-  if (!existing) throw notFound("Bookmark not found");
+  if (!existing) throw notFound("Không tìm thấy dấu trang");
   await prisma.bookmark.delete({ where: { id } });
 }
 
@@ -284,7 +284,7 @@ async function setFlag(
   value: boolean,
 ): Promise<BookmarkDto> {
   const existing = await prisma.bookmark.findFirst({ where: { id, userId }, select: { id: true } });
-  if (!existing) throw notFound("Bookmark not found");
+  if (!existing) throw notFound("Không tìm thấy dấu trang");
 
   const updated = await prisma.bookmark.update({
     where: { id },
@@ -303,7 +303,7 @@ export const restoreBookmark = (userId: string, id: string) =>
 
 export async function visitBookmark(userId: string, id: string): Promise<BookmarkDto> {
   const existing = await prisma.bookmark.findFirst({ where: { id, userId }, select: { id: true } });
-  if (!existing) throw notFound("Bookmark not found");
+  if (!existing) throw notFound("Không tìm thấy dấu trang");
 
   const updated = await prisma.bookmark.update({
     where: { id },

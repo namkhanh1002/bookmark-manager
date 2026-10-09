@@ -25,11 +25,11 @@ const BLOCKED_HOST_SUFFIXES = [".localhost", ".local", ".internal", ".lan", ".ho
 export function normalizeUrl(raw: string): string {
   const trimmed = raw.trim();
   if (!trimmed) {
-    throw new ApiError(400, "INVALID_URL", "URL must not be empty");
+    throw new ApiError(400, "INVALID_URL", "URL không được để trống");
   }
 
   if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(trimmed) && !/^https?:\/\//i.test(trimmed)) {
-    throw new ApiError(400, "INVALID_URL", "Only http and https URLs are supported");
+    throw new ApiError(400, "INVALID_URL", "Chỉ hỗ trợ URL http và https");
   }
 
   const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
@@ -38,11 +38,11 @@ export function normalizeUrl(raw: string): string {
   try {
     parsed = new URL(withProtocol);
   } catch {
-    throw new ApiError(400, "INVALID_URL", `"${raw}" is not a valid URL`);
+    throw new ApiError(400, "INVALID_URL", `"${raw}" không phải URL hợp lệ`);
   }
 
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new ApiError(400, "INVALID_URL", "Only http and https URLs are supported");
+    throw new ApiError(400, "INVALID_URL", "Chỉ hỗ trợ URL http và https");
   }
 
   return parsed.toString();
@@ -96,11 +96,11 @@ export function lookupAddresses(hostname: string): Promise<ResolvedAddress[]> {
   return new Promise((resolve, reject) => {
     dnsLookup(hostname, { all: true, verbatim: true }, (err, addresses) => {
       if (err) {
-        reject(new ApiError(400, "INVALID_URL", `Could not resolve host "${hostname}"`));
+        reject(new ApiError(400, "INVALID_URL", `Không thể phân giải host "${hostname}"`));
         return;
       }
       if (!addresses || addresses.length === 0) {
-        reject(new ApiError(400, "INVALID_URL", `Could not resolve host "${hostname}"`));
+        reject(new ApiError(400, "INVALID_URL", `Không thể phân giải host "${hostname}"`));
         return;
       }
       resolve(addresses);
@@ -114,7 +114,7 @@ export function assertAddressesPublic(hostname: string, addresses: ResolvedAddre
     return family === 4 ? !isPublicIPv4(address) : !isPublicIPv6(address);
   });
   if (unsafe) {
-    throw new ApiError(400, "INVALID_URL", `"${hostname}" resolves to a private network address`);
+    throw new ApiError(400, "INVALID_URL", `"${hostname}" trỏ đến địa chỉ mạng nội bộ`);
   }
 }
 
