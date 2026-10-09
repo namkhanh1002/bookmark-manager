@@ -69,13 +69,13 @@ npm start       # serve API và client đã build tại http://localhost:4000
 
 ## Deploy lên Vercel + Neon
 
-Repo đã cấu hình sẵn cho Vercel (`vercel.json` + `api/[...path].ts`): một project vừa serve client tĩnh (`client/dist`, SPA rewrite) **vừa** serve API Express dưới dạng serverless function tại `/api/*`.
+Repo đã cấu hình sẵn cho Vercel (`vercel.json` + `api/index.ts`): một project vừa serve client tĩnh (`client/dist`, SPA rewrite) **vừa** serve API Express dưới dạng serverless function tại `/api/*`.
 
 1. **Đẩy repo lên GitHub.**
 2. **Tạo project Neon** và copy chuỗi kết nối **Pooled** (`...?sslmode=require`).
 3. **Vercel → Add New Project → Import repo.** Root = thư mục gốc repo; `vercel.json` đã set:
    - `installCommand`: `npm install` (postinstall sinh Prisma client)
-   - `buildCommand`: `npm run db:deploy && npm run build` (chạy migration rồi build)
+   - `buildCommand`: `npm run db:deploy && npm run api:bundle && npm run build` (migration rồi bundle API rồi build)
    - `outputDirectory`: `client/dist`
    - SPA rewrite cho mọi path không phải `/api`
 4. **Environment variables** (cả Production *và* Preview):
@@ -88,8 +88,8 @@ Repo đã cấu hình sẵn cho Vercel (`vercel.json` + `api/[...path].ts`): m�
    | `NODE_ENV` | `production` (Vercel tự đặt sẵn) |
    | `VITE_API_URL` | *tuỳ chọn* — chỉ cần khi API host ở origin khác |
 
-5. **Deploy.** Migration chạy ở mỗi lần build; entry function là `api/[...path].ts`
-   (`createApp()` từ server, không cần `listen`).
+5. **Deploy.** Migration chạy ở mỗi lần build; entry function là `api/index.ts`
+   (bundle ESM `dist/_server.mjs` do `npm run api:bundle` sinh ra, export `createApp()`).
 6. *Tuỳ chọn:* nạp data demo 1 lần cho production: `DATABASE_URL=... npm run db:seed`.
 
 **Tách API sau này:** deploy API sang project Vercel thứ hai (cùng entry `api/`), rồi set

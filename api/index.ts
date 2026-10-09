@@ -1,3 +1,3 @@
-import { createApp } from "../server/src/app";
+import app from "../dist/_server.mjs";
 
-export default createApp();
+export default app;
